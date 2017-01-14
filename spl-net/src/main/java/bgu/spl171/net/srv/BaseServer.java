@@ -2,6 +2,10 @@ package bgu.spl171.net.srv;
 
 import bgu.spl171.net.api.MessageEncoderDecoder;
 import bgu.spl171.net.api.MessagingProtocol;
+import bgu.spl171.net.api.bidi.BidiMessagingProtocol;
+import bgu.spl171.net.api.bidi.Connections;
+import bgu.spl171.net.srv.bidi.BidiConnections;
+
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -10,19 +14,20 @@ import java.util.function.Supplier;
 public abstract class BaseServer<T> implements Server<T> {
 
     private final int port;
-    private final Supplier<MessagingProtocol<T>> protocolFactory;
+    private final Supplier<BidiMessagingProtocol<T>> protocolFactory;
     private final Supplier<MessageEncoderDecoder<T>> encdecFactory;
+    private final BidiConnections<T> connections;
     private ServerSocket sock;
 
     public BaseServer(
             int port,
-            Supplier<MessagingProtocol<T>> protocolFactory,
+            Supplier<BidiMessagingProtocol<T>> protocolFactory,
             Supplier<MessageEncoderDecoder<T>> encdecFactory) {
-
+        this.connections = new BidiConnections<>();
         this.port = port;
         this.protocolFactory = protocolFactory;
         this.encdecFactory = encdecFactory;
-		this.sock = null;
+        this.sock = null;
     }
 
     @Override
@@ -36,11 +41,14 @@ public abstract class BaseServer<T> implements Server<T> {
 
                 Socket clientSock = serverSock.accept();
 
+                BidiMessagingProtocol protocol = protocolFactory.get();
                 BlockingConnectionHandler<T> handler = new BlockingConnectionHandler<>(
                         clientSock,
                         encdecFactory.get(),
-                        protocolFactory.get());
-
+                        protocol
+                        );
+                int id = connections.add(handler);
+                protocol.start(id,connections);
                 execute(handler);
             }
         } catch (IOException ex) {
@@ -51,10 +59,10 @@ public abstract class BaseServer<T> implements Server<T> {
 
     @Override
     public void close() throws IOException {
-		if (sock != null)
-			sock.close();
+        if (sock != null)
+            sock.close();
     }
 
-    protected abstract void execute(BlockingConnectionHandler<T>  handler);
+    protected abstract void execute(BlockingConnectionHandler<T> handler);
 
 }
