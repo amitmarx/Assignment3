@@ -9,6 +9,10 @@ public class ReadRequest implements Command {
         this.fileName = fileName;
     }
 
+    public String getFileName() {
+        return fileName;
+    }
+
     @Override
     public short getOpCode() {
         return OpCode.ReadRequest.getValue();
