@@ -2,7 +2,7 @@ package bgu.spl171.net.impl.TFTP.Commands;
 
 import bgu.spl171.net.impl.TFTP.Commands.Responses.Response;
 
-public class Data implements Command {
+public class Data implements Response {
     short size;
     short blockId;
     byte[] data;
@@ -23,6 +23,10 @@ public class Data implements Command {
 
     public byte[] getData() {
         return data;
+    }
+
+    public boolean isFinalMessage(){
+        return size<512;
     }
 
     @Override

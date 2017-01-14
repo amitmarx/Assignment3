@@ -9,6 +9,10 @@ public class WriteRequest implements Command {
         this.fileName = fileName;
     }
 
+    public String getFileName() {
+        return fileName;
+    }
+
     @Override
     public short getOpCode() {
         return OpCode.WriteRequest.getValue();
