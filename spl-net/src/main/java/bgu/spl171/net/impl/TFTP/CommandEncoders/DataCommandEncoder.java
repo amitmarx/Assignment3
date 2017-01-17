@@ -10,7 +10,7 @@ public class DataCommandEncoder implements CommandEncoder {
     @Override
     public byte[] encode(Command cmd) {
         Data data = (Data)cmd;
-        byte[] opCode = shortEncoderDecoder.encode((short)3);
+        byte[] opCode = shortEncoderDecoder.encode(data.getOpCode());
         byte[] size = shortEncoderDecoder.encode(data.getSize());
         byte[] blockId = shortEncoderDecoder.encode(data.getBlockId());
         return EncoderUtils.mergeByteArray(opCode,size,blockId,data.getData(),new byte[]{0});

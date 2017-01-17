@@ -11,7 +11,7 @@ public interface CommandBuilder {
             case 1: return new ReadRequestCommandBuilder();
             case 2: return new WriteRequestCommandBuilder();
             case 3: return new DataCommandBuilder();
-            case 5: return new ErrorCommandBuilder();
+            case 5: return new TFTPErrorCommandBuilder();
             case 4: return new AckCommandBuilder();
             case 7: return new LoginRequestCommandBuilder();
             case 8: return new DeleteRequestCommandBuilder();

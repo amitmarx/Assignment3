@@ -2,7 +2,7 @@ package bgu.spl171.net.impl.TFTP.CommandEncoders;
 
 public class EncoderUtils {
 
-    static byte[] mergeByteArray(byte[]... arrays) {
+    public static byte[] mergeByteArray(byte[]... arrays) {
         int size = 0;
         for (byte[] array : arrays) {
             size+=array.length;

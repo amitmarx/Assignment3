@@ -1,5 +1,6 @@
 package bgu.spl171.net.impl.TFTP.EncoderDecoders;
 
+import bgu.spl171.net.impl.TFTP.CommandEncoders.EncoderUtils;
 import bgu.spl171.net.impl.TFTP.Commands.Command;
 import bgu.spl171.net.impl.TFTP.Commands.ReadRequest;
 
@@ -24,5 +25,8 @@ public class StringEncoderDecoder {
             bytes[i] = stringBuffer.get(i);
         }
         return new String(bytes);
+    }
+    public byte[] encode(String str){
+        return EncoderUtils.mergeByteArray(str.getBytes(),new byte[]{0});
     }
 }
