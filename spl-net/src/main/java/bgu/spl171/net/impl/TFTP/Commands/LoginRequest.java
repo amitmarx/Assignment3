@@ -5,6 +5,10 @@ import bgu.spl171.net.impl.TFTP.Commands.Responses.Response;
 public class LoginRequest implements Command {
     String username;
 
+    public String getUsername() {
+        return username;
+    }
+
     public LoginRequest(String username) {
         this.username = username;
     }

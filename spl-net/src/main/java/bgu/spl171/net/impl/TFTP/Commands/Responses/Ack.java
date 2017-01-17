@@ -6,6 +6,9 @@ public class Ack implements Response {
     public Ack(short blockId) {
         this.blockId = blockId;
     }
+    public Ack() {
+        this.blockId = (short)0;
+    }
 
     public short getBlockId() {
         return blockId;
