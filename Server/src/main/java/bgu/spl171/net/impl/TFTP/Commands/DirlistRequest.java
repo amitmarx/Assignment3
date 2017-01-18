@@ -7,9 +7,4 @@ public class DirlistRequest implements Command {
     public short getOpCode() {
         return OpCode.Dirlist.getValue();
     }
-
-    @Override
-    public Response execute() {
-        return null;
-    }
 }

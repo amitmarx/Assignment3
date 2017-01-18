@@ -30,11 +30,6 @@ public class TFTPError implements Response {
         return (short) 5;
     }
 
-    @Override
-    public Response execute() {
-        return null;
-    }
-
     public String errorMessage() {
         return errorMsg;
     }

@@ -9,8 +9,4 @@ public class DisconnectRequest implements Command {
         return OpCode.Disconnect.getValue();
     }
 
-    @Override
-    public Response execute() {
-        return null;
-    }
 }

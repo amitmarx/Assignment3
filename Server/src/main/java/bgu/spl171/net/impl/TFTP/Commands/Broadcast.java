@@ -24,8 +24,4 @@ public class Broadcast implements Command {
         return OpCode.Broadcast.getValue();
     }
 
-    @Override
-    public Response execute() {
-        return null;
-    }
 }

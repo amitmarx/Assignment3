@@ -25,17 +25,12 @@ public class Data implements Response {
         return data;
     }
 
-    public boolean isFinalMessage(){
-        return size<512;
+    public boolean isFinalMessage() {
+        return size < 512;
     }
 
     @Override
     public short getOpCode() {
         return OpCode.Data.getValue();
-    }
-
-    @Override
-    public Response execute() {
-        return null;
     }
 }

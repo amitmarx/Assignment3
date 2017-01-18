@@ -4,7 +4,7 @@ import bgu.spl171.net.impl.TFTP.Commands.Responses.Response;
 
 public interface Command {
     short getOpCode();
-    Response execute();
+
     enum OpCode{
         ReadRequest,
         WriteRequest,

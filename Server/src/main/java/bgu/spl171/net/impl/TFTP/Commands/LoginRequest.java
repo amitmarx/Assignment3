@@ -18,8 +18,4 @@ public class LoginRequest implements Command {
         return OpCode.Login.getValue();
     }
 
-    @Override
-    public Response execute() {
-        return null;
-    }
 }

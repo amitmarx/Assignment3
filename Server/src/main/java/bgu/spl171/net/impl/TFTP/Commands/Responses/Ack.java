@@ -19,8 +19,4 @@ public class Ack implements Response {
         return OpCode.Ack.getValue();
     }
 
-    @Override
-    public Response execute() {
-        return null;
-    }
 }

@@ -18,8 +18,4 @@ public class ReadRequest implements Command {
         return OpCode.ReadRequest.getValue();
     }
 
-    @Override
-    public Response execute() {
-        return null;
-    }
 }

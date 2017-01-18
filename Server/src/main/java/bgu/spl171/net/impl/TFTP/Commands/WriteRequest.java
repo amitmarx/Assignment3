@@ -18,8 +18,4 @@ public class WriteRequest implements Command {
         return OpCode.WriteRequest.getValue();
     }
 
-    @Override
-    public Response execute() {
-        return null;
-    }
 }

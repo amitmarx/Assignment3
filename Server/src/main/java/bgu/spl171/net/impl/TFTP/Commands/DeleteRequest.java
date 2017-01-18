@@ -18,8 +18,4 @@ public class DeleteRequest implements Command {
         return OpCode.Delete.getValue();
     }
 
-    @Override
-    public Response execute() {
-        return null;
-    }
 }
