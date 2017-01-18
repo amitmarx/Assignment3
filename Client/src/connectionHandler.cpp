@@ -101,3 +101,8 @@ void ConnectionHandler::close() {
         std::cout << "closing failed: connection already closed" << std::endl;
     }
 }
+
+bool ConnectionHandler::shouldTerminate() {
+    //todo implement
+    return false;
+}

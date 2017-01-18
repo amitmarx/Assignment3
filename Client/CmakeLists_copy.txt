@@ -1,0 +1,42 @@
+#cmake_minimum_required(VERSION 3.5)
+#project(Client)
+#
+#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
+#set(CMAKE_EXE_LINKER_FLAGS "-lboost_system -lpthread -lboost_locale")
+#
+#FIND_PACKAGE( Boost REQUIRED COMPONENTS system )
+#INCLUDE_DIRECTORIES( ${Boost_INCLUDE_DIR} )
+#
+#set(SOURCE_FILES include/connectionHandler.h
+#        src/connectionHandler.cpp src/echoClient.cpp src/ClientReceiver.cpp include/ClientReceiver.h)
+#add_executable(Client ${SOURCE_FILES})
+#
+#TARGET_LINK_LIBRARIES( Client ${Boost_FILESYSTEM_LIBRARY}
+#        ${Boost_SYSTEM_LIBRARY} ${Boost_LIBRARIES} )
+cmake_minimum_required(VERSION 3.5)
+
+project(Client)
+
+message(STATUS "start running cmake...")
+
+find_package(Boost COMPONENTS system)
+
+if(Boost_FOUND)
+
+    message(STATUS "Boost_INCLUDE_DIRS: ${Boost_INCLUDE_DIRS}")
+    message(STATUS "Boost_LIBRARIES: ${Boost_LIBRARIES}")
+    message(STATUS "Boost_VERSION: ${Boost_VERSION}")
+
+    include_directories(${Boost_INCLUDE_DIRS})
+
+endif()
+
+set(SOURCE_FILES include/connectionHandler.h
+        src/connectionHandler.cpp src/echoClient.cpp src/ClientReceiver.cpp include/ClientReceiver.h)
+add_executable(Client ${SOURCE_FILES})
+
+if(Boost_FOUND)
+
+    target_link_libraries(Client ${Boost_LIBRARIES})
+
+endif()
