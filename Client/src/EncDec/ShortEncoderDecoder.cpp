@@ -4,12 +4,12 @@
 
 boost::optional<short> ShortEncoderDecoder::decodeNextByte(char nextByte) {
     shortBuffer[index] = nextByte;
-    if(index==1){
+    index++;
+    if(index==2){
         boost::optional<short> returnValue(bytesToShort(shortBuffer));
         index=0;
         return returnValue;
     }
-    index++;
     return boost::none;
 }
 

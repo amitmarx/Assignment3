@@ -5,6 +5,7 @@
 #include <iostream>
 #include <boost/asio.hpp>
 #include "EncDec/TFTPEncoderDecoder.h"
+#include "Protocol.h"
 
 using boost::asio::ip::tcp;
 
@@ -13,11 +14,12 @@ private:
 	const std::string host_;
 	const short port_;
     TFTPEncoderDecoder * encDec;
+    Protocol * protocol;
 	boost::asio::io_service io_service_;   // Provides core I/O functionality
 	tcp::socket socket_; 
  
 public:
-    ConnectionHandler(std::string host, short port, TFTPEncoderDecoder * encoderDecoder);
+    ConnectionHandler(std::string host, short port, TFTPEncoderDecoder * encoderDecoder, Protocol * p);
     virtual ~ConnectionHandler();
  
     // Connect to the remote machine
@@ -51,7 +53,10 @@ public:
 	
     // Close down the connection properly.
     void close();
- 
+
+    Command *getCommand();
+
+    void startListen();
 }; //class ConnectionHandler
  
 #endif

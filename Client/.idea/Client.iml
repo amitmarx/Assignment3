@@ -2,67 +2,73 @@
 <module type="CPP_MODULE" version="4">
   <component name="NewModuleRootManager">
     <content url="file://$MODULE_DIR$">
-      <sourceFolder url="file://$MODULE_DIR$/src/ClientReceiver.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src/Builders/DataCommandBuilder.cpp" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/src/Builders/BroadcastCommandBuilder.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/src/Builders/AckCommandBuilder.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src/Builders/TFTPErrorCommandBuilder.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src/Builders/CommandBuilderFactory.cpp" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/src/Builders/AckCommandBuilder.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/src/Builders/BroadcastCommandBuilder.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src/EncDec/TFTPEncoderDecoder.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src/EncDec/ShortEncoderDecoder.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src/EncDec/StringEncoderDecoder.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src/echoClient.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/src/Protocol.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src/connectionHandler.cpp" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/src/Encoders/DirlistCommandEncoder.cpp" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/src/Encoders/LoginCommandEncoder.cpp" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/src/Encoders/CommandEncoderFactory.cpp" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/src/Encoders/DeleteCommandEncoder.cpp" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/src/Encoders/DeleteCommandEncoder.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/src/Encoders/AckCommandEncoder.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/src/Encoders/DisconnectCommandEncoder.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src/Encoders/DataCommandEncoder.cpp" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/src/Encoders/TFTPErrorEncoder.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/src/Encoders/WriteCommandEncoder.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/src/Encoders/DeleteCommandEncoder.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src/Encoders/EncoderUtils.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/src/Encoders/DirlistCommandEncoder.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/src/Encoders/AckCommandEncoder.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/src/Encoders/LoginCommandEncoder.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/src/Encoders/ReadCommandEncoder.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/src/Encoders/CommandEncoderFactory.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/src/Encoders/TFTPErrorEncoder.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/src/Commands/TFTPError.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src/Commands/ReadRequest.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src/Commands/DirlistRequest.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src/Commands/Data.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src/Commands/Broadcast.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src/Commands/Ack.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src/Commands/DisconnectRequest.cpp" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/src/Commands/WriteRequest.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src/Commands/DeleteRequest.cpp" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/src/Commands/TFTPError.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/src/Commands/WriteRequest.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src/Commands/LoginRequest.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/include/connectionHandler.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/include/Protocol.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/include/Builders/AckCommandBuilder.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/include/Builders/BroadcastCommandBuilder.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/include/Builders/CommandBuilderFactory.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/include/Builders/CommandBuilder.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/include/Builders/DataCommandBuilder.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/include/Builders/TFTPErrorCommandBuilder.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/include/ClientReceiver.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/include/EncDec/TFTPEncoderDecoder.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/include/EncDec/StringEncoderDecoder.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/include/EncDec/ShortEncoderDecoder.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/include/Encoders/TFTPErrorEncoder.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/include/Encoders/DirlistCommandEncoder.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/include/Encoders/CommandEncoder.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/include/Encoders/DeleteCommandEncoder.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/include/Encoders/DisconnectCommandEncoder.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/include/Encoders/CommandEncoderFactory.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/include/Encoders/ReadCommandEncoder.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/include/Encoders/DataCommandEncoder.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/include/Encoders/LoginCommandEncoder.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/include/Encoders/EncoderUtils.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/include/Encoders/CommandEncoderFactory.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/include/Encoders/CommandEncoder.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/include/Encoders/WriteCommandEncoder.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/include/Encoders/AckCommandEncoder.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/include/Commands/Command.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/include/Commands/DirlistRequest.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/include/Commands/LoginRequest.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/include/Commands/DeleteRequest.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/include/Commands/Response.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/include/Commands/ReadRequest.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/include/Commands/TFTPError.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/include/Commands/WriteRequest.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/include/Commands/Data.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/include/Commands/Broadcast.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/include/Commands/Response.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/include/Commands/DisconnectRequest.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/include/Commands/Data.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/include/Commands/DirlistRequest.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/include/Commands/LoginRequest.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/include/Commands/Ack.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/include/Commands/DisconnectRequest.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/CMakeLists.txt" isTestSource="false" />
     </content>
     <orderEntry type="sourceFolder" forTests="false" />
