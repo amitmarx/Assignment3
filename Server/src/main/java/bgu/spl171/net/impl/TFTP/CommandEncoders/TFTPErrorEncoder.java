@@ -14,7 +14,7 @@ public class TFTPErrorEncoder implements CommandEncoder{
         TFTPError error = (TFTPError) cmd;
         byte[] opCode = shortEncoderDecoder.encode(error.getOpCode());
         byte[] errorCode = shortEncoderDecoder.encode(error.getErrorCode());
-        byte[] errorMsg = stringEncoderDecoder.encode(error.errorMessage());
+        byte[] errorMsg = stringEncoderDecoder.encode(error.getErrorMessage());
         return EncoderUtils.mergeByteArray(opCode,errorCode,errorMsg);
     }
 }

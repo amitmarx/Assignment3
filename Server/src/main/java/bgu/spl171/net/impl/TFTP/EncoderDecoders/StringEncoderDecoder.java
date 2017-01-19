@@ -16,6 +16,7 @@ public class StringEncoderDecoder {
             stringBuffer.clear();
             return returnValue;
         }
+        stringBuffer.add(nextByte);
         return null;
     }
 

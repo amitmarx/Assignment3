@@ -1,6 +1,6 @@
 package bgu.spl171.net.impl.TFTP.CommandEncoders;
 
-import bgu.spl171.net.impl.TFTP.Commands.Broadcast;
+import bgu.spl171.net.impl.TFTP.Commands.Responses.Broadcast;
 import bgu.spl171.net.impl.TFTP.Commands.Command;
 import bgu.spl171.net.impl.TFTP.EncoderDecoders.ShortEncoderDecoder;
 

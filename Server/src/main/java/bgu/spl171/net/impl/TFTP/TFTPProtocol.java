@@ -3,15 +3,14 @@ package bgu.spl171.net.impl.TFTP;
 import bgu.spl171.net.api.bidi.BidiMessagingProtocol;
 import bgu.spl171.net.api.bidi.Connections;
 import bgu.spl171.net.impl.TFTP.Commands.*;
-import bgu.spl171.net.impl.TFTP.Commands.Responses.Ack;
-import bgu.spl171.net.impl.TFTP.Commands.Responses.Response;
-import bgu.spl171.net.impl.TFTP.Commands.Responses.TFTPError;
+import bgu.spl171.net.impl.TFTP.Commands.Responses.*;
 import org.apache.commons.io.FileUtils;
 
 import java.io.File;
 import java.nio.file.Files;
-import java.nio.file.Path;
+import java.nio.file.OpenOption;
 import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.util.*;
 
 public class TFTPProtocol implements BidiMessagingProtocol<Command> {
@@ -76,6 +75,9 @@ public class TFTPProtocol implements BidiMessagingProtocol<Command> {
         if (response != null) {
             connections.send(connectionId,response);
         }
+        if(shouldTerminate){
+            connections.disconnect(connectionId);
+        }
     }
 
     private Response handleError(TFTPError message) {
@@ -92,7 +94,8 @@ public class TFTPProtocol implements BidiMessagingProtocol<Command> {
 
     private Response handleDeleteRequest(DeleteRequest message) {
         try {
-            if (Files.deleteIfExists(Paths.get(message.getFileName()))) {
+            File file = new File(directory,message.getFileName());
+            if (Files.deleteIfExists(file.toPath())) {
                 connections.broadcast(new Broadcast(false, message.getFileName()));
                 return new Ack();
             }
@@ -118,6 +121,7 @@ public class TFTPProtocol implements BidiMessagingProtocol<Command> {
     }
 
     private Response handleDirlist(DirlistRequest message) {
+        Logger.log("Received DIRQ");
         Collection<File> files = FileUtils.listFiles(directory, null, true);
         StringBuilder dirlistBuilder = new StringBuilder();
         for (File f : files) {
@@ -128,14 +132,14 @@ public class TFTPProtocol implements BidiMessagingProtocol<Command> {
         byte[] dirlistInBytes = dirlistBuilder.toString().getBytes();
         int blocks = dirlistInBytes.length / 512;
         for (short block = 0; block < blocks; block++) {
-            byte[] data = Arrays.copyOfRange(dirlistInBytes, block * 512, (block + 1) * 512 - 1);
+            byte[] data = Arrays.copyOfRange(dirlistInBytes, block * 512, (block + 1) * 512 );
             Data cmd = new Data((short) data.length, block, data);
             dataToSend.add(cmd);
         }
         int modulo = dirlistInBytes.length % 512;
         int startPos = blocks * 512;
         byte[] data = Arrays.copyOfRange(dirlistInBytes, startPos, startPos + modulo);
-        Data cmd = new Data((short) data.length, (short) (blocks + 1), data);
+        Data cmd = new Data((short) data.length, (short) (blocks), data);
         dataToSend.add(cmd);
         return dataToSend.poll();
     }
@@ -150,8 +154,9 @@ public class TFTPProtocol implements BidiMessagingProtocol<Command> {
         try {
             dataToWrite.add(message);
             if (message.isFinalMessage()) {
+                File file = new File(directory,fileName);
                 for (Data data : dataToWrite) {
-                    Files.write(Paths.get(fileName), data.getData());
+                    Files.write(file.toPath(),data.getData(), StandardOpenOption.APPEND,StandardOpenOption.CREATE);
                 }
                 connections.broadcast(new Broadcast(true, fileName));
             }
@@ -162,7 +167,8 @@ public class TFTPProtocol implements BidiMessagingProtocol<Command> {
     }
 
     private Response handleWriteRequest(WriteRequest message) {
-        if (!Files.exists(Paths.get(message.getFileName()))) {
+        File file = new File(directory,message.getFileName());
+        if (file.exists()) {
             return new TFTPError(5);
         }
         fileName = message.getFileName();
@@ -171,6 +177,7 @@ public class TFTPProtocol implements BidiMessagingProtocol<Command> {
     }
 
     private Response handleAck(Ack message) {
+        Logger.log("Ack:"+message.getBlockId());
         if (dataToSend.size() > 0) {
             return dataToSend.poll();
         }
@@ -178,21 +185,22 @@ public class TFTPProtocol implements BidiMessagingProtocol<Command> {
     }
 
     private Response handleReadRequest(ReadRequest message) {
-        if (!Files.exists(Paths.get(message.getFileName()))) {
+        File file = new File(directory,message.getFileName());
+        if (!file.exists()) {
             return new TFTPError(1);
         }
         try {
-            byte[] fileInBytes = Files.readAllBytes(Paths.get(message.getFileName()));
+            byte[] fileInBytes = Files.readAllBytes(file.toPath());
             int blocks = fileInBytes.length / 512;
             for (short block = 0; block < blocks; block++) {
-                byte[] data = Arrays.copyOfRange(fileInBytes, block * 512, (block + 1) * 512 - 1);
+                byte[] data = Arrays.copyOfRange(fileInBytes, block * 512, (block + 1) * 512 );
                 Data cmd = new Data((short) data.length, block, data);
                 dataToSend.add(cmd);
             }
             int modulo = fileInBytes.length % 512;
             int startPos = blocks * 512;
             byte[] data = Arrays.copyOfRange(fileInBytes, startPos, startPos + modulo);
-            Data cmd = new Data((short) data.length, (short) (blocks + 1), data);
+            Data cmd = new Data((short) data.length, (short) (blocks), data);
             dataToSend.add(cmd);
         } catch (Exception e) {
             return new TFTPError(2);

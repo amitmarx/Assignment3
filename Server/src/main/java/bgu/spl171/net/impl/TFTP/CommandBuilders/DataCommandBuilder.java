@@ -1,7 +1,7 @@
 package bgu.spl171.net.impl.TFTP.CommandBuilders;
 
 import bgu.spl171.net.impl.TFTP.Commands.Command;
-import bgu.spl171.net.impl.TFTP.Commands.Data;
+import bgu.spl171.net.impl.TFTP.Commands.Responses.Data;
 import bgu.spl171.net.impl.TFTP.EncoderDecoders.ShortEncoderDecoder;
 
 public class DataCommandBuilder implements CommandBuilder {
@@ -15,7 +15,9 @@ public class DataCommandBuilder implements CommandBuilder {
     public Command decodeNextByte(byte nextByte) {
         if (size == null) {
             size = shortEncoderDecoder.decodeNextByte(nextByte);
-            data = new byte[size];
+            if(size!=null) {
+                data = new byte[size];
+            }
         } else if (blockId == null) {
             blockId = shortEncoderDecoder.decodeNextByte(nextByte);
         } else {

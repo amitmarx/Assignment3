@@ -4,10 +4,6 @@ public class TFTPError implements Response {
     String errorMsg;
     short errorCode;
 
-    public String getErrorMsg() {
-        return errorMsg;
-    }
-
     public short getErrorCode() {
         return errorCode;
     }
@@ -30,7 +26,7 @@ public class TFTPError implements Response {
         return (short) 5;
     }
 
-    public String errorMessage() {
+    public String getErrorMessage() {
         return errorMsg;
     }
 

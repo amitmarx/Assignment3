@@ -31,7 +31,11 @@ public class BidiConnections<T> implements Connections<T> {
     @Override
     public void broadcast(T msg) {
         for (ConnectionHandler<T> connection : connectionList.values()) {
-            connection.send(msg);
+            try {
+                connection.send(msg);
+            }
+            catch (Exception e){
+            }
         }
     }
 

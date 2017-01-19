@@ -23,7 +23,7 @@ int main (int argc, char *argv[]) {
 
     ClientReceiver receiver(connectionHandler);
 
-    boost::thread th1(boost::bind(&ClientReceiver::receiverMessages, &receiver));
+//    boost::thread th1(boost::bind(&ClientReceiver::receiverMessages, &receiver));
 	
 	//From here we will see the rest of the ehco client implementation:
     while (1) {
