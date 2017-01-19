@@ -2,7 +2,7 @@
 // Created by Amit Marx on 18/01/2017.
 //
 
-#include "../include/clientReceiver.h"
+#include "../include/ClientReceiver.h"
 
 ClientReceiver::ClientReceiver(ConnectionHandler & conHandler) : handler(conHandler) {
 }
