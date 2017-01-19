@@ -13,7 +13,7 @@ public:
     ~ShortEncoderDecoder() {}
 
     boost::optional<short> decodeNextByte(char nextByte);
-    char * encode(short num);
+    std::vector<char> encode(short num);
 
 private:
     short bytesToShort(char* byteArr);

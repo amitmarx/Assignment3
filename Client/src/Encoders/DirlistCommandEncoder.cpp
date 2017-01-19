@@ -5,8 +5,8 @@
 #include "../../include/Encoders/DirlistCommandEncoder.h"
 #include "../../include/Commands/DirlistRequest.h"
 
-char *DirlistCommandEncoder::encode(Command *cmd) {
+std::vector<char> DirlistCommandEncoder::encode(Command *cmd) {
     DirlistRequest * dirlist = static_cast<DirlistRequest *>(cmd);
-    char * opCode = shortEncoderDecoder->encode(dirlist->getOpCode());
+    std::vector<char> opCode = shortEncoderDecoder->encode(dirlist->getOpCode());
     return opCode;
 }

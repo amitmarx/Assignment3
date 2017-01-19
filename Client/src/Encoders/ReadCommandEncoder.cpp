@@ -6,12 +6,12 @@
 #include "../../include/Encoders/EncoderUtils.h"
 #include "../../include/Commands/ReadRequest.h"
 
-char *ReadCommandEncoder::encode(Command *cmd) {
+std::vector<char> ReadCommandEncoder::encode(Command *cmd) {
     ReadRequest * request = static_cast<ReadRequest *>(cmd);
-    char * opCode = shortEncoderDecoder->encode(request->getOpCode());
+    std::vector<char> opCode = shortEncoderDecoder->encode(request->getOpCode());
 
     std::vector<std::vector<char>> arrays;
-    arrays.push_back( std::vector<char>(opCode,opCode+2) );
-    arrays.push_back( stringEncoderDecoder->encodeToVector(request->getFileName()) );
+    arrays.push_back(opCode );
+    arrays.push_back( stringEncoderDecoder->encode(request->getFileName()) );
     return EncoderUtils::mergeByteArray(arrays);
 }

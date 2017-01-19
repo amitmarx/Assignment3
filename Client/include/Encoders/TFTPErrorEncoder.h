@@ -17,5 +17,5 @@ public:
         delete stringEncoderDecoder;
     }
 
-    char * encode(Command *cmd) override;
+    std::vector<char> encode(Command *cmd) override;
 };

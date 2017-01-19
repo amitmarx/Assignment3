@@ -17,6 +17,6 @@ Command *TFTPEncoderDecoder::decodeNextByte(char nextByte) {
     return returnValue;
 }
 
-char * TFTPEncoderDecoder::encode(Command *message) {
+std::vector<char> TFTPEncoderDecoder::encode(Command *message) {
     return commandEncoderFactory->get(message->getOpCode())->encode(message);
 }

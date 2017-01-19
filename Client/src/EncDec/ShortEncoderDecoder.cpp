@@ -13,12 +13,12 @@ boost::optional<short> ShortEncoderDecoder::decodeNextByte(char nextByte) {
     return boost::none;
 }
 
-char * ShortEncoderDecoder::encode(short num)
+std::vector<char> ShortEncoderDecoder::encode(short num)
 {
-    char * shortPtr =new char[2];
-    shortPtr[0] = ((num >> 8) & 0xFF);
-    shortPtr[1] = (num & 0xFF);
-    return shortPtr;
+    std::vector<char> shortInBytes;
+    shortInBytes.push_back((num >> 8) & 0xFF);
+    shortInBytes.push_back(num & 0xFF);
+    return shortInBytes;
 }
 short ShortEncoderDecoder::bytesToShort(char* bytesArr)
 {

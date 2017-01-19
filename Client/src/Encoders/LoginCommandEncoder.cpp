@@ -6,12 +6,12 @@
 #include "../../include/Commands/LoginRequest.h"
 #include "../../include/Encoders/EncoderUtils.h"
 
-char *LoginCommandEncoder::encode(Command *cmd) {
+std::vector<char> LoginCommandEncoder::encode(Command *cmd) {
     LoginRequest * login = static_cast<LoginRequest *>(cmd);
-    char * opCode = shortEncoderDecoder->encode(login->getOpCode());
+    std::vector<char> opCode = shortEncoderDecoder->encode(login->getOpCode());
 
     std::vector<std::vector<char>> arrays;
-    arrays.push_back( std::vector<char>(opCode,opCode+2) );
-    arrays.push_back( stringEncoderDecoder->encodeToVector(login->getUsername()) );
+    arrays.push_back( opCode );
+    arrays.push_back( stringEncoderDecoder->encode(login->getUsername()) );
     return EncoderUtils::mergeByteArray(arrays);
 }

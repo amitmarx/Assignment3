@@ -6,12 +6,12 @@
 #include "../../include/Commands/WriteRequest.h"
 #include "../../include/Encoders/EncoderUtils.h"
 
-char *WriteCommandEncoder::encode(Command *cmd) {
+std::vector<char> WriteCommandEncoder::encode(Command *cmd) {
     WriteRequest * request = static_cast<WriteRequest *>(cmd);
-    char * opCode = shortEncoderDecoder->encode(request->getOpCode());
+    std::vector<char> opCode = shortEncoderDecoder->encode(request->getOpCode());
 
     std::vector<std::vector<char>> arrays;
-    arrays.push_back( std::vector<char>(opCode,opCode+2) );
-    arrays.push_back( stringEncoderDecoder->encodeToVector(request->getFileName()) );
+    arrays.push_back( opCode );
+    arrays.push_back( stringEncoderDecoder->encode(request->getFileName()) );
     return EncoderUtils::mergeByteArray(arrays);
 }

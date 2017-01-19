@@ -5,8 +5,8 @@
 #include "../../include/Encoders/DisconnectCommandEncoder.h"
 #include "../../include/Commands/DisconnectRequest.h"
 
-char *DisconnectCommandEncoder::encode(Command *cmd) {
-    DisconnectRequest * diconnect = static_cast<DisconnectRequest *>(cmd);
-    char * opCode = shortEncoderDecoder->encode(diconnect->getOpCode());
+std::vector<char> DisconnectCommandEncoder::encode(Command *cmd) {
+    DisconnectRequest * disconnect = static_cast<DisconnectRequest *>(cmd);
+    std::vector<char> opCode = shortEncoderDecoder->encode(disconnect->getOpCode());
     return opCode;
 }

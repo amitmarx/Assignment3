@@ -25,6 +25,6 @@ public:
 
     Command *decodeNextByte(char nextByte);
 
-    char * encode(Command *message);
+    std::vector<char> encode(Command *message);
 
 };

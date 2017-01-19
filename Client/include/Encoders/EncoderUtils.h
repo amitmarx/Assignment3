@@ -5,5 +5,5 @@
 class EncoderUtils {
 
 public:
-    static char * mergeByteArray(std::vector<std::vector<char>> arrays);
+    static std::vector<char> mergeByteArray(std::vector<std::vector<char>> arrays);
 };

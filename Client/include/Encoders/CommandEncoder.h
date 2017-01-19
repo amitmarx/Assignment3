@@ -5,6 +5,6 @@
 
 class CommandEncoder {
 public:
-    virtual char * encode(Command *cmd) = 0;
+    virtual std::vector<char> encode(Command *cmd) = 0;
 
 };
