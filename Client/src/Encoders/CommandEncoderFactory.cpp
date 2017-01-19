@@ -9,14 +9,17 @@
 #include "../../include/Encoders/DirlistCommandEncoder.h"
 #include "../../include/Encoders/LoginCommandEncoder.h"
 #include "../../include/Encoders/DeleteCommandEncoder.h"
+#include "../../include/Encoders/DisconnectCommandEncoder.h"
+#include "../../include/Encoders/WriteCommandEncoder.h"
+#include "../../include/Encoders/ReadCommandEncoder.h"
 
 CommandEncoder * CommandEncoderFactory::get(short opCode) {
 		switch (opCode)
 		{
-//			case 1:
-//				return new ReadCommandEncoder();
-//			case 2:
-//				return new WriteCommandEncoder();
+			case 1:
+				return new ReadCommandEncoder();
+			case 2:
+				return new WriteCommandEncoder();
 			case 3:
 				return new DataCommandEncoder();
 			case 4:
@@ -29,8 +32,8 @@ CommandEncoder * CommandEncoderFactory::get(short opCode) {
 				return new LoginCommandEncoder();
 			case 8:
 				return new DeleteCommandEncoder();
-//			case 10:
-//				return new DisconnectCommandEncoder();
+			case 10:
+				return new DisconnectCommandEncoder();
 		}
 
 		return nullptr;

@@ -12,10 +12,10 @@ private:
     StringEncoderDecoder *stringEncoderDecoder = new StringEncoderDecoder();
 
 public:
-    ~TFTPErrorEncoder() {
+    virtual ~TFTPErrorEncoder() {
         delete shortEncoderDecoder;
         delete stringEncoderDecoder;
     }
 
-    char* encode(Command *cmd) override;
+    char * encode(Command *cmd) override;
 };
