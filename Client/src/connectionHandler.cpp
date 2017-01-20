@@ -1,4 +1,5 @@
 #include "../include/connectionHandler.h"
+#include "../include/Protocol.h"
 
 using boost::asio::ip::tcp;
 
@@ -8,7 +9,7 @@ using std::cerr;
 using std::endl;
 using std::string;
  
-ConnectionHandler::ConnectionHandler(string host, short port): host_(host), port_(port), io_service_(), socket_(io_service_){}
+ConnectionHandler::ConnectionHandler(string host, short port, TFTPEncoderDecoder * encoderDecoder, Protocol * p): protocol(p), encDec(encoderDecoder), host_(host), port_(port), io_service_(), socket_(io_service_){}
     
 ConnectionHandler::~ConnectionHandler() {
     close();
@@ -62,37 +63,41 @@ bool ConnectionHandler::sendBytes(const char bytes[], int bytesToWrite) {
     }
     return true;
 }
- 
-bool ConnectionHandler::getLine(std::string& line) {
-    return getFrameAscii(line, '\n');
-}
 
-bool ConnectionHandler::sendLine(std::string& line) {
-    return sendFrameAscii(line, '\n');
+bool ConnectionHandler::sendCommand(Command * cmd) {
+    std::vector<char> msgInVector = encDec->encode(cmd);
+    char msgInBytes[msgInVector.size()];
+    std::copy(msgInVector.begin(),msgInVector.end(),msgInBytes);
+    protocol->notifySentCommand(cmd);
+    return sendBytes(msgInBytes,(int)msgInVector.size());
 }
  
-bool ConnectionHandler::getFrameAscii(std::string& frame, char delimiter) {
+Command * ConnectionHandler::getCommand() {
+    Command * cmd = nullptr;
     char ch;
     // Stop when we encounter the null character. 
     // Notice that the null character is not appended to the frame string.
     try {
 		do{
 			getBytes(&ch, 1);
-            frame.append(1, ch);
-        }while (delimiter != ch);
+            cmd = encDec->decodeNextByte(ch);
+        }while (cmd == nullptr);
     } catch (std::exception& e) {
         std::cerr << "recv failed (Error: " << e.what() << ')' << std::endl;
-        return false;
     }
-    return true;
+    return cmd;
 }
- 
-bool ConnectionHandler::sendFrameAscii(const std::string& frame, char delimiter) {
-	bool result=sendBytes(frame.c_str(),frame.length());
-	if(!result) return false;
-	return sendBytes(&delimiter,1);
+
+void ConnectionHandler::startListen(){
+    while(!protocol->shouldTerminate()){
+        Command * cmd = getCommand();
+        Command * response = protocol->process(cmd);
+        if(response != nullptr){
+            sendCommand(response);
+        }
+    }
 }
- 
+
 // Close down the connection properly.
 void ConnectionHandler::close() {
     try{

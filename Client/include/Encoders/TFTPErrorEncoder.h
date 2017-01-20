@@ -1,0 +1,21 @@
+#pragma once
+
+#include "CommandEncoder.h"
+#include "../EncDec/ShortEncoderDecoder.h"
+#include "../EncDec/StringEncoderDecoder.h"
+#include "../Commands/Command.h"
+#include <vector>
+
+class TFTPErrorEncoder : public CommandEncoder {
+private:
+    ShortEncoderDecoder *shortEncoderDecoder = new ShortEncoderDecoder();
+    StringEncoderDecoder *stringEncoderDecoder = new StringEncoderDecoder();
+
+public:
+    virtual ~TFTPErrorEncoder() {
+        delete shortEncoderDecoder;
+        delete stringEncoderDecoder;
+    }
+
+    std::vector<char> encode(Command *cmd) override;
+};
