@@ -19,4 +19,7 @@ class Data : public Response {
     bool isFinalMessage();
 
     short getOpCode() override;
+    ~Data(){
+        delete data;
+    }
 };

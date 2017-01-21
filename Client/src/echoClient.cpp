@@ -6,10 +6,12 @@
 #include "../include/Commands/DeleteRequest.h"
 #include <boost/thread.hpp>
 #include <boost/tokenizer.hpp>
+#include <fstream>
 
 std::vector<std::string> splitString(std::string basic_string, char i);
 
 Command *getCommandFromString(std::string basic_string);
+bool doesFileToWriteExist=true;
 
 using boost::thread;
 
@@ -39,33 +41,48 @@ int main (int argc, char *argv[]) {
         std::string input;
         std::getline(std::cin,input);
 
-        Command * cmd = getCommandFromString(input);
-        connectionHandler.sendCommand(cmd);
+        Command * cmd = nullptr;
+        cmd = getCommandFromString(input);
+        if(cmd!= nullptr){
+            connectionHandler.sendCommand(cmd);
+        } else{
+            if (doesFileToWriteExist) {
+                doesFileToWriteExist=true;
+                std::cout << "Error " << 4 << std::endl;
+            }
+        }
     }
     return 0;
 }
 
 Command *getCommandFromString(std::string input) {
-    std::vector<std::string> splittedInput = splitString(input, ' ');
-    std::string code = splittedInput[0];
-    if(code=="RRQ"){
-        return new ReadRequest(splittedInput[1]);
-    }
-    if(code=="WRQ"){
-        return new WriteRequest(splittedInput[1]);
-    }
-    if(code=="DIRQ"){
-        return new DirlistRequest();
-    }
-    if(code=="LOGRQ"){
-        return new LoginRequest(splittedInput[1]);
-    }
-    if(code=="DELRQ"){
-        return new DeleteRequest(splittedInput[1]);
-    }
-    if(code=="DISC"){
-        return new DisconnectRequest();
-    }
+        std::vector<std::string> splittedInput = splitString(input, ' ');
+        std::string code = splittedInput[0];
+        if (code == "RRQ" && splittedInput.size() == 2) {
+            return new ReadRequest(splittedInput[1]);
+        }
+        if (code == "WRQ" && splittedInput.size() == 2) {
+            std::ifstream file(splittedInput[1]);
+            if (file.good()) {
+                return new WriteRequest(splittedInput[1]);
+            }
+            else {
+                doesFileToWriteExist=false;
+                std::cout<<"Error 2"<<std::endl;
+            }
+        }
+        if (code == "DIRQ" && splittedInput.size() == 1) {
+            return new DirlistRequest();
+        }
+        if (code == "LOGRQ" && splittedInput.size() == 2) {
+            return new LoginRequest(splittedInput[1]);
+        }
+        if (code == "DELRQ" && splittedInput.size() == 2) {
+            return new DeleteRequest(splittedInput[1]);
+        }
+        if (code == "DISC" && splittedInput.size() == 1) {
+            return new DisconnectRequest();
+        }
     return nullptr;
 }
 

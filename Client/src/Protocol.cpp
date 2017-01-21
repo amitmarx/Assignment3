@@ -30,19 +30,9 @@ void Protocol::notifySentCommand(Command *cmd) {
         case 2:
             notifyWrite(static_cast<WriteRequest *>(cmd));
             break;
-//        case 3:
-//            return new DataCommandEncoder();
-//        case 4:
-//            return new AckCommandEncoder();
         case 5:
             notifyError();
             break;
-//        case 6:
-//            return new DirlistCommandEncoder();
-//        case 7:
-//            return new LoginCommandEncoder();
-//        case 8:
-//            return new DeleteCommandEncoder();
         case 10:
             notifyDisconnect();
             break;
@@ -50,12 +40,11 @@ void Protocol::notifySentCommand(Command *cmd) {
 }
 
 Command * Protocol::handleData(Data *data) {
-    if(!fileToWrite.empty()){
-        writeToFile(data->data,data->size,fileToWrite);
-//        FILE * file =fopen(fileToWrite.c_str(), "wb");
-//        fwrite(data->data,sizeof(char),data->size,file);
+    if(!fileToRead.empty()){
+        writeToFile(data->data,data->size,fileToRead);
         if(data->isFinalMessage()){
-            fileToWrite.clear();
+            std::cout<<"RRQ "<<fileToRead<<" complete"<<std::endl;
+            fileToRead.clear();
         }
     }
     else{
@@ -80,6 +69,11 @@ Command * Protocol::handleAck(Ack *pAck) {
         dataToSend.pop();
         return returnVal;
     }
+    if(numberOfBlocks-1==pAck->blockId){
+        std::cout<<"WRQ "<<fileToWrite<< " complete"<<std::endl;
+        fileToWrite.clear();
+        numberOfBlocks =0;
+    }
     if(didAskToTerminate){
         canTerminate = true;
     }
@@ -91,13 +85,13 @@ bool Protocol::shouldTerminate() {
 }
 
 Command * Protocol::handleError(TFTPError *pError) {
-    std::cout<<pError->errorMsg<<std::endl;
+    std::cout<<"Error "<<pError->getErrorCode()<<std::endl;
     resetState();
     return nullptr;
 }
 
 void Protocol::resetState(){
-    fileToWrite.clear();
+    fileToRead.clear();
     dirlist.clear();
     while (!dataToSend.empty()){
         Data* tmp = dataToSend.front();
@@ -113,12 +107,12 @@ Command *  Protocol::handleBroadcast(Broadcast *pBroadcast) {
     } else{
         isAdded = "del";
     }
-    std::cout<<"BCAST "<<isAdded<< pBroadcast->getFileName() <<std::endl;
+    std::cout<<"BCAST "<<isAdded+" "<< pBroadcast->getFileName() <<std::endl;
     return nullptr;
 }
 
 void Protocol::notifyRead(ReadRequest *pRequest) {
-    fileToWrite = pRequest->getFileName();
+    fileToRead = pRequest->getFileName();
 }
 
 void Protocol::notifyWrite(WriteRequest *pRequest) {
@@ -141,6 +135,9 @@ void Protocol::notifyWrite(WriteRequest *pRequest) {
     int startPos = blocks*512;
     std::copy(ret+startPos,ret+startPos+modulo,data);
     dataToSend.push((new Data(modulo,blocks,data)));
+    numberOfBlocks = dataToSend.size();
+    fileToWrite = pRequest->getFileName();
+    delete ret;
 }
 
 void Protocol::notifyError() {

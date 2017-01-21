@@ -23,14 +23,19 @@ public:
     Command * process(Command * cmd);
     void notifySentCommand(Command * cmd);
     bool shouldTerminate();
+    ~Protocol(){
+        delete stringEncoderDecoder;
+    }
 private:
     StringEncoderDecoder * stringEncoderDecoder = new StringEncoderDecoder();
+    std::string fileToRead;
     std::string fileToWrite;
+
     std::string dirlist;
     bool didAskToTerminate = false;
     bool canTerminate = false;
     std::queue<Data *> dataToSend;
-
+    int numberOfBlocks =0;
     Command * handleData(Data *data);
 
     Command * handleAck(Ack *pAck);
