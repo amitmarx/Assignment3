@@ -154,13 +154,13 @@ public class TFTPProtocol implements BidiMessagingProtocol<Command> {
         if (directory.getTotalSpace() < message.getSize()) {
             return new TFTPError(3);
         }
-        if (Files.exists(Paths.get(fileName))) {
+        File file = new File(directory, fileName);
+        if (file.exists()) {
             return new TFTPError(5);
         }
         try {
             dataToWrite.add(message);
             if (message.isFinalMessage()) {
-                File file = new File(directory, fileName);
                 for (Data data : dataToWrite) {
                     Files.write(file.toPath(), data.getData(), StandardOpenOption.APPEND, StandardOpenOption.CREATE);
                 }
