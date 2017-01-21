@@ -24,6 +24,7 @@ public class TFTPProtocol implements BidiMessagingProtocol<Command> {
     Boolean isLoggedIn = false;
     Boolean shouldTerminate = false;
     TFTPLoggedUsers loggedUsers;
+    Broadcast broadcastMsg = null;
 
     public TFTPProtocol(TFTPLoggedUsers loggedUsers, String filesDir) {
         this.loggedUsers = loggedUsers;
@@ -72,11 +73,16 @@ public class TFTPProtocol implements BidiMessagingProtocol<Command> {
         } else {
             response = new TFTPError(6);
         }
+
         if (response != null) {
-            connections.send(connectionId,response);
+            connections.send(connectionId, response);
         }
-        if(shouldTerminate){
+        if (shouldTerminate) {
             connections.disconnect(connectionId);
+        }
+        if(broadcastMsg != null){
+            connections.broadcast(broadcastMsg);
+            broadcastMsg = null;
         }
     }
 
@@ -94,9 +100,9 @@ public class TFTPProtocol implements BidiMessagingProtocol<Command> {
 
     private Response handleDeleteRequest(DeleteRequest message) {
         try {
-            File file = new File(directory,message.getFileName());
+            File file = new File(directory, message.getFileName());
             if (Files.deleteIfExists(file.toPath())) {
-                connections.broadcast(new Broadcast(false, message.getFileName()));
+                broadcastMsg = new Broadcast(false, message.getFileName());
                 return new Ack();
             }
         } catch (Exception e) {
@@ -132,7 +138,7 @@ public class TFTPProtocol implements BidiMessagingProtocol<Command> {
         byte[] dirlistInBytes = dirlistBuilder.toString().getBytes();
         int blocks = dirlistInBytes.length / 512;
         for (short block = 0; block < blocks; block++) {
-            byte[] data = Arrays.copyOfRange(dirlistInBytes, block * 512, (block + 1) * 512 );
+            byte[] data = Arrays.copyOfRange(dirlistInBytes, block * 512, (block + 1) * 512);
             Data cmd = new Data((short) data.length, block, data);
             dataToSend.add(cmd);
         }
@@ -154,11 +160,11 @@ public class TFTPProtocol implements BidiMessagingProtocol<Command> {
         try {
             dataToWrite.add(message);
             if (message.isFinalMessage()) {
-                File file = new File(directory,fileName);
+                File file = new File(directory, fileName);
                 for (Data data : dataToWrite) {
-                    Files.write(file.toPath(),data.getData(), StandardOpenOption.APPEND,StandardOpenOption.CREATE);
+                    Files.write(file.toPath(), data.getData(), StandardOpenOption.APPEND, StandardOpenOption.CREATE);
                 }
-                connections.broadcast(new Broadcast(true, fileName));
+                broadcastMsg = new Broadcast(true, fileName);
             }
         } catch (Exception e) {
             return new TFTPError(2);
@@ -167,7 +173,7 @@ public class TFTPProtocol implements BidiMessagingProtocol<Command> {
     }
 
     private Response handleWriteRequest(WriteRequest message) {
-        File file = new File(directory,message.getFileName());
+        File file = new File(directory, message.getFileName());
         if (file.exists()) {
             return new TFTPError(5);
         }
@@ -177,7 +183,7 @@ public class TFTPProtocol implements BidiMessagingProtocol<Command> {
     }
 
     private Response handleAck(Ack message) {
-        Logger.log("Ack:"+message.getBlockId());
+        Logger.log("Ack:" + message.getBlockId());
         if (dataToSend.size() > 0) {
             return dataToSend.poll();
         }
@@ -185,7 +191,7 @@ public class TFTPProtocol implements BidiMessagingProtocol<Command> {
     }
 
     private Response handleReadRequest(ReadRequest message) {
-        File file = new File(directory,message.getFileName());
+        File file = new File(directory, message.getFileName());
         if (!file.exists()) {
             return new TFTPError(1);
         }
@@ -193,7 +199,7 @@ public class TFTPProtocol implements BidiMessagingProtocol<Command> {
             byte[] fileInBytes = Files.readAllBytes(file.toPath());
             int blocks = fileInBytes.length / 512;
             for (short block = 0; block < blocks; block++) {
-                byte[] data = Arrays.copyOfRange(fileInBytes, block * 512, (block + 1) * 512 );
+                byte[] data = Arrays.copyOfRange(fileInBytes, block * 512, (block + 1) * 512);
                 Data cmd = new Data((short) data.length, block, data);
                 dataToSend.add(cmd);
             }
