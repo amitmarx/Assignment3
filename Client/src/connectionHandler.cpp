@@ -13,6 +13,8 @@ ConnectionHandler::ConnectionHandler(string host, short port, TFTPEncoderDecoder
     
 ConnectionHandler::~ConnectionHandler() {
     close();
+    delete protocol;
+    delete encDec;
 }
  
 bool ConnectionHandler::connect() {
@@ -94,6 +96,8 @@ void ConnectionHandler::startListen(){
         Command * response = protocol->process(cmd);
         if(response != nullptr){
             sendCommand(response);
+            delete response;
+            delete cmd;
         }
     }
 }

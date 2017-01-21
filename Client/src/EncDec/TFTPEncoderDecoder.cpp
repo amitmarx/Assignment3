@@ -11,6 +11,7 @@ Command *TFTPEncoderDecoder::decodeNextByte(char nextByte) {
     } else {
         returnValue = builder->decodeNextByte(nextByte);
         if (returnValue != nullptr) {
+            delete builder;
             builder = nullptr;
         }
     }
@@ -18,5 +19,8 @@ Command *TFTPEncoderDecoder::decodeNextByte(char nextByte) {
 }
 
 std::vector<char> TFTPEncoderDecoder::encode(Command *message) {
-    return commandEncoderFactory->get(message->getOpCode())->encode(message);
+    CommandEncoder * encoder = commandEncoderFactory->get(message->getOpCode());
+    std::vector<char> returnVal = encoder -> encode(message);
+    delete encoder;
+    return returnVal;
 }

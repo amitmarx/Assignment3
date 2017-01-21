@@ -1,8 +1,0 @@
-cmake_minimum_required(VERSION 3.6)
-project(Client)
-message(STATUS "start running cmake...")
-
-find_package(Boost 1.57.0 COMPONENTS system filesystem thread REQUIRED)
-include_directories(${Boost_INCLUDE_DIRS})
-add_executable(Client include/connectionHandler.h src/connectionHandler.cpp src/echoClient.cpp src/ClientReceiver.cpp include/ClientReceiver.h)
-target_link_libraries(Client ${Boost_LIBRARIES})
